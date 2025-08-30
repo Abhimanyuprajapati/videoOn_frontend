@@ -12,10 +12,11 @@ import {
   Thread,
   Window,
 } from "stream-chat-react";
-import { StreamChat } from "stream-chat";
+// import { StreamChat } from "stream-chat";
 import toast from "react-hot-toast";
 import ChatLoader from '../components/ChatLoader';
 import CallButton from '../components/CallButton';
+import { StreamChat, Channel as StreamChannel } from "stream-chat";
 
 const VITE_STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
 
@@ -23,8 +24,8 @@ export const ChatPage: React.FC = () => {
   const {id}= useParams();
 
   console.log("Chat ID:", id);
-    const [chatClient, setChatClient] = useState(null);
-  const [channel, setChannel] = useState(null);
+  const [chatClient, setChatClient] = useState<StreamChat | null>(null);
+const [channel, setChannel] = useState<StreamChannel | null>(null);
   const [loading, setLoading] = useState(true);
 
   const { authUser } = UseAuth();

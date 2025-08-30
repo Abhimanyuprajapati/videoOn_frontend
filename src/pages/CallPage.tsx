@@ -11,6 +11,7 @@ import {
   StreamTheme,
   CallingState,
   useCallStateHooks,
+    Call,
 } from "@stream-io/video-react-sdk";
 
 import "@stream-io/video-react-sdk/dist/css/styles.css";
@@ -23,9 +24,12 @@ const VITE_STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
 
 
 export const CallPage: React.FC = () => {
-  const { id: callId } = useParams();
-  const [client, setClient] = useState(null);
-  const [call, setCall] = useState(null);
+  // const { id: callId } = useParams();
+  // const [client, setClient] = useState(null);
+  // const [call, setCall] = useState(null);
+  const { id: callId } = useParams<{ id: string }>();
+const [client, setClient] = useState<StreamVideoClient | null>(null);
+const [call, setCall] = useState<Call | null>(null);
   const [isConnecting, setIsConnecting] = useState(true);
   // const [isLoading, setIsLoading] = useState(false);
 
@@ -36,7 +40,7 @@ export const CallPage: React.FC = () => {
     try {
       // setIsLoading(true);
       const response = await getStreamToken();
-      if (!response?.token || !authUser) return;
+      if (!response?.token || !authUser || !callId) return;
 
       const user = {
         id: authUser._id,
