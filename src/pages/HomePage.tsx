@@ -7,16 +7,32 @@ import { FriendCard, GetLanguageFlag } from '../components/FriendCard';
 
 
 
-export const capitialize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
+
+type User = {
+  _id: string;
+  fullName: string;
+  profilePic: string;
+  location?: string;
+  bio?: string;
+  nativeLanguage: string;
+  learningLanguage: string;
+  // nativeLanguage: string;
+  // learningLanguage: string;
+};
+
+type Friend = User;
+
+export const capitialize = (str:any) => str.charAt(0).toUpperCase() + str.slice(1);
 
 export const HomePage: React.FC = () => {
 
-  const [recommendedUsers, setRecommendedUsers] = React.useState([]);
+  // const [recommendedUsers, setRecommendedUsers] = React.useState([]);
+  const [recommendedUsers, setRecommendedUsers] = React.useState<User[]>([]);
   const [loadingUsers, setLoadingUsers] = React.useState(false);
-  const [friends, setFriends] = React.useState([]);
+  // const [friends, setFriends] = React.useState([]);
+  const [friends, setFriends] = React.useState<Friend[]>([]);
   const [loadingFriends, setLoadingFriends] = React.useState(false);
-  // const [outgoingRequestsIds, setOutgoingRequestsIds] = React.useState(new Set());
-  // const [outgoingRequestsIds, setOutgoingRequestsIds] = React.useState<string[]>([]);
  const [outgoingRequestsIds, setOutgoingRequestsIds] = React.useState<Set<string>>(new Set());
 
 
@@ -52,7 +68,7 @@ export const HomePage: React.FC = () => {
         const response = await getOutGoingFriendRequests();
         // setOutgoingRequestsIds(response.outgoingRequest);
         // setOutgoingRequestsIds(new Set(response.outgoingRequest)); 
-          const ids = response.outgoingRequest.map((req) => req.recipient._id);
+          const ids = response.outgoingRequest.map((req:any) => req.recipient._id);
     setOutgoingRequestsIds(new Set(ids));
       } catch (error) {
         console.error("Failed to fetch outgoing requests:", error);
@@ -158,12 +174,14 @@ console.log("outgoingRequestsIds", outgoingRequestsIds);
                   
                       <div className="flex flex-wrap gap-1.5">
                         <span className="badge badge-secondary">
-                          {GetLanguageFlag(user.nativeLanguage)}
-                          Native: {capitialize(user.nativeLanguage)}
+                        
+                           <GetLanguageFlag language={user.nativeLanguage} />
+                            Native: {capitialize(user.nativeLanguage)}
                         </span>
                         <span className="badge badge-outline">
-                          {GetLanguageFlag(user.learningLanguage)}
-                          Learning: {capitialize(user.learningLanguage)}
+                      
+                            <GetLanguageFlag language={user.learningLanguage} />
+                            Learning: {capitialize(user.learningLanguage)}
                         </span>
                       </div>
 
